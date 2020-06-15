@@ -1,0 +1,320 @@
+<html>
+
+<head>
+    <title>Chatbot Widget</title>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:500&display=swap" rel="stylesheet">
+
+    <!--Import Font Awesome Icon Font-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+
+    <!--Import materialize.css-->
+    <link rel="stylesheet" type="text/css" href="static/css/materialize.min.css">
+
+    <!--Main css-->
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .tooltip {
+          position: relative;
+          display: inline-block;
+          border-bottom: 1px dotted black;
+        }
+        
+        .tooltip .tooltiptext {
+          visibility: hidden;
+          /*width: 120px;*/
+          background-color:  #fff;
+          color: black;
+          text-align: center;
+          border-radius: 6px;
+          padding: 5px 0;
+          
+          /* Position the tooltip */
+          position: absolute;
+          z-index: 1;
+          bottom: 100%;
+          left: 50%;
+          margin-left: -60px;
+        }
+        
+        .tooltip:hover .tooltiptext {
+          visibility: visible;
+        }
+        </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Modal for rendering the charts, declare this if you want to render charts, 
+         else you remove the modal -->
+        <div id="modal1" class="modal">
+            <canvas id="modal-chart"></canvas>
+        </div>
+
+        <!--chatbot widget -->
+        <div class="widget">
+            <div class="chat_header">
+
+                <!--Add the name of the bot here -->
+                <span class="chat_header_title">මචං</span>
+                <span class="dropdown-trigger" href='#' data-target='dropdown1'>
+                  <i class="material-icons">
+                  more_vert
+                  </i>
+               </span>
+
+                <!-- Dropdown menu-->
+                <ul id='dropdown1' class='dropdown-content'>
+                    <li><a href="#" id="clear">Clear</a></li>
+                    <li><a href="#" id="restart">Restart</a></li>
+                    <li><a href="#" id="close">Close</a></li>
+                </ul>
+            </div>
+
+            <!--Chatbot contents goes here -->
+            <div class="chats" id="chats">
+                <div class="clearfix"></div>
+
+            </div>
+
+            <!--keypad for user to type the message -->
+            <div class="keypad tooltip">
+               
+                <span class="tooltiptext" id="userInput"></span>
+                <textarea id="userInput1" onkeyup="startText();" onselect="startText();" onclick="startText();" placeholder="Type a message..." class="usrInput "></textarea>
+                
+                <div id="sendButton"><i class="fa fa-paper-plane" aria-hidden="true"></i></div>
+            </div>
+        </div>
+
+        <!--bot profile-->
+        <div class="profile_div" id="profile_div">
+            <img class="imgProfile" src="static/img/botAvatar.png" />
+        </div>
+
+        <!-- Bot pop-up intro -->
+        <div class="tap-target" data-target="profile_div">
+            <div class="tap-target-content">
+                <h5 class="white-text">ඔබට කොහොමද? 👋</h5>
+                <p class="white-text">මම ඔබට කෑම  ඇනවුම් කිර්‍රම සදහා සහය වන්නම්.</p>
+            </div>
+        </div>
+
+    </div>
+   
+
+    <!--JavaScript at end of body for optimized loading-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="static/js/materialize.min.js"></script>
+
+    <!--Main Script -->
+    <script type="text/javascript" src="static/js/script.js"></script>
+
+    <!--Chart.js Script -->
+    <script type="text/javascript" src="static/js/chart.min.js"></script>
+
+
+
+<script language="JavaScript" type="text/javascript">
+   
+    var text;
+    var nVowels;
+    var consonants= new Array()
+    var consonantsUni= new Array()
+    var vowels= new Array()
+    var vowelsUni= new Array()
+    var vowelModifiersUni= new Array()
+    var specialConsonants= new Array()
+    var specialConsonantsUni= new Array()
+    var specialCharUni= new Array()
+    var specialChar= new Array()
+    
+    
+        vowelsUni[0]='ඌ';    vowels[0]='oo';    vowelModifiersUni[0]='ූ';
+        vowelsUni[1]='ඕ';    vowels[1]='o\\)';    vowelModifiersUni[1]='ෝ';
+        vowelsUni[2]='ඕ';    vowels[2]='oe';    vowelModifiersUni[2]='ෝ';
+        vowelsUni[3]='ආ';    vowels[3]='aa';    vowelModifiersUni[3]='ා';
+        vowelsUni[4]='ආ';    vowels[4]='a\\)';    vowelModifiersUni[4]='ා';
+        vowelsUni[5]='ඈ';    vowels[5]='Aa';    vowelModifiersUni[5]='ෑ';
+        vowelsUni[6]='ඈ';    vowels[6]='A\\)';    vowelModifiersUni[6]='ෑ';
+        vowelsUni[7]='ඈ';    vowels[7]='ae';    vowelModifiersUni[7]='ෑ';
+        vowelsUni[8]='ඊ';    vowels[8]='ii';    vowelModifiersUni[8]='ී';
+        vowelsUni[9]='ඊ';    vowels[9]='i\\)';    vowelModifiersUni[9]='ී';
+        vowelsUni[10]='ඊ';    vowels[10]='ie';    vowelModifiersUni[10]='ී';
+        vowelsUni[11]='ඊ';    vowels[11]='ee';    vowelModifiersUni[11]='ී';
+        vowelsUni[12]='ඒ';    vowels[12]='ea';    vowelModifiersUni[12]='ේ';
+        vowelsUni[13]='ඒ';    vowels[13]='e\\)';    vowelModifiersUni[13]='ේ';
+        vowelsUni[14]='ඒ';    vowels[14]='ei';    vowelModifiersUni[14]='ේ';
+        vowelsUni[15]='ඌ';    vowels[15]='uu';    vowelModifiersUni[15]='ූ';
+        vowelsUni[16]='ඌ';    vowels[16]='u\\)';    vowelModifiersUni[16]='ූ';
+        vowelsUni[17]='ඖ';    vowels[17]='au';    vowelModifiersUni[17]='ෞ';
+        vowelsUni[18]='ඇ';    vowels[18]='/\a';    vowelModifiersUni[18]='ැ';
+        
+        vowelsUni[19]='අ';    vowels[19]='a';    vowelModifiersUni[19]='';
+        vowelsUni[20]='ඇ';    vowels[20]='A';    vowelModifiersUni[20]='ැ';
+        vowelsUni[21]='ඉ';    vowels[21]='i';    vowelModifiersUni[21]='ි';
+        vowelsUni[22]='එ';    vowels[22]='e';    vowelModifiersUni[22]='ෙ';
+        vowelsUni[23]='උ';    vowels[23]='u';    vowelModifiersUni[23]='ු';
+        vowelsUni[24]='ඔ';    vowels[24]='o';    vowelModifiersUni[24]='ො';
+        vowelsUni[25]='ඓ';    vowels[25]='I';    vowelModifiersUni[25]='ෛ';
+        nVowels=26;
+    
+        specialConsonantsUni[0]='ං'; specialConsonants[0]=/\\n/g;
+        specialConsonantsUni[1]='ඃ'; specialConsonants[1]=/\\h/g;
+        specialConsonantsUni[2]='ඞ'; specialConsonants[2]=/\\N/g;
+        specialConsonantsUni[3]='ඍ'; specialConsonants[3]=/\\R/g;
+        //special characher Repaya
+        specialConsonantsUni[4]='ර්'+'\u200D'; specialConsonants[4]=/R/g;
+        specialConsonantsUni[5]='ර්'+'\u200D'; specialConsonants[5]=/\\r/g;
+        
+        consonantsUni[0]='ඬ'; consonants[0]='nnd';
+        consonantsUni[1]='ඳ'; consonants[1]='nndh';
+        consonantsUni[2]='ඟ'; consonants[2]='nng';
+        consonantsUni[3]='ථ'; consonants[3]='Th';
+        consonantsUni[4]='ධ'; consonants[4]='Dh';
+        consonantsUni[5]='ඝ'; consonants[5]='gh';
+        consonantsUni[6]='ඡ'; consonants[6]='Ch';
+        consonantsUni[7]='ඵ'; consonants[7]='ph';
+        consonantsUni[8]='භ'; consonants[8]='bh';
+        consonantsUni[9]='ශ'; consonants[9]='sh';
+        consonantsUni[10]='ෂ'; consonants[10]='Sh';
+        consonantsUni[11]='ඥ'; consonants[11]='GN';
+        consonantsUni[12]='ඤ'; consonants[12]='KN';
+        consonantsUni[13]='ළු'; consonants[13]='Lu';
+        consonantsUni[14]='ද'; consonants[14]='dh';
+        consonantsUni[15]='ච'; consonants[15]='ch';
+        consonantsUni[16]='ඛ'; consonants[16]='kh';
+        consonantsUni[17]='ත'; consonants[17]='th';
+        
+        consonantsUni[18]='ට'; consonants[18]='t';
+        consonantsUni[19]='ක'; consonants[19]='k';    
+        consonantsUni[20]='ඩ'; consonants[20]='d';
+        consonantsUni[21]='න'; consonants[21]='n';
+        consonantsUni[22]='ප'; consonants[22]='p';
+        consonantsUni[23]='බ'; consonants[23]='b';
+        consonantsUni[24]='ම'; consonants[24]='m';   
+        consonantsUni[25]='‍ය'; consonants[25]='\\u005C' + 'y';
+        consonantsUni[26]='‍ය'; consonants[26]='Y';
+        consonantsUni[27]='ය'; consonants[27]='y';
+        consonantsUni[28]='ජ'; consonants[28]='j';
+        consonantsUni[29]='ල'; consonants[29]='l';
+        consonantsUni[30]='ව'; consonants[30]='v';
+        consonantsUni[31]='ව'; consonants[31]='w';
+        consonantsUni[32]='ස'; consonants[32]='s';
+        consonantsUni[33]='හ'; consonants[33]='h';
+        consonantsUni[34]='ණ'; consonants[34]='N';
+        consonantsUni[35]='ළ'; consonants[35]='L';
+        consonantsUni[36]='ඛ'; consonants[36]='K';
+        consonantsUni[37]='ඝ'; consonants[37]='G';
+        consonantsUni[38]='ඨ'; consonants[38]='T';
+        consonantsUni[39]='ඪ'; consonants[39]='D';
+        consonantsUni[40]='ඵ'; consonants[40]='P';
+        consonantsUni[41]='ඹ'; consonants[41]='B';
+        consonantsUni[42]='ෆ'; consonants[42]='f';
+        consonantsUni[43]='ඣ'; consonants[43]='q';
+        consonantsUni[44]='ග'; consonants[44]='g';
+        //last because we need to ommit this in dealing with Rakaransha
+        consonantsUni[45]='ර'; consonants[45]='r';
+    
+        specialCharUni[0]='ෲ'; specialChar[0]='ruu';
+        specialCharUni[1]='ෘ'; specialChar[1]='ru';
+        //specialCharUni[2]='්‍ර'; specialChar[2]='ra';
+        
+    
+    function startText() {
+        var s,r,v;
+        var tt=document.getElementById("userInput1");
+        text = tt.value;  
+        //special consonents
+        for (var i=0; i<specialConsonants.length; i++){
+            text = text.replace(specialConsonants[i], specialConsonantsUni[i]);
+        }
+        //consonents + special Chars
+        for (var i=0; i<specialCharUni.length; i++){
+            for (var j=0;j<consonants.length;j++){
+                s = consonants[j] + specialChar[i];
+                v = consonantsUni[j] + specialCharUni[i];
+                r = new RegExp(s, "g");
+                text = text.replace(r, v);
+            }
+        }
+        //consonants + Rakaransha + vowel modifiers
+        for (var j=0;j<consonants.length;j++){
+            for (var i=0;i<vowels.length;i++){
+                s = consonants[j] + "r" + vowels[i];
+                v = consonantsUni[j] + "්‍ර" + vowelModifiersUni[i];
+                r = new RegExp(s, "g");
+                text = text.replace(r, v);
+            }
+            s = consonants[j] + "r";
+            v = consonantsUni[j] + "්‍ර";
+            r = new RegExp(s, "g");
+            text = text.replace(r, v);
+        }
+        //consonents + vowel modifiers
+        for (var i=0;i<consonants.length;i++){
+            for (var j=0;j<nVowels;j++){ 
+                s = consonants[i]+vowels[j];
+                v = consonantsUni[i] + vowelModifiersUni[j];
+                r = new RegExp(s, "g");
+                text = text.replace(r, v);
+            }
+        }
+    
+        //consonents + HAL
+        for (var i=0; i<consonants.length; i++){
+            r = new RegExp(consonants[i], "g");
+            text = text.replace(r, consonantsUni[i]+"්");
+        }
+            
+        //vowels
+        for (var i=0; i<vowels.length; i++){
+            r = new RegExp(vowels[i], "g");
+            text = text.replace(r, vowelsUni[i]);
+        }
+    
+        //document.txtBox.box2.value=text;
+        document.getElementById("userInput").innerHTML = text;
+       
+    }
+    
+    function copyit(theField) {
+        var tempval=eval("document."+theField);
+        tempval.focus();
+        tempval.select();
+        therange=tempval.createTextRange();
+        therange.execCommand("Copy")
+    }
+    
+    var schemeVisible = 0;
+    function changeVisibility(){
+        if (schemeVisible){
+            document.getElementById('scheme').style.visibility='hidden';
+            document.getElementById('link').innerHTML="&nbsp;Show Transliteration Scheme&nbsp;";
+            schemeVisible=0;
+        }
+        else{
+            document.getElementById('scheme').style.visibility='visible';
+            document.getElementById('link').innerHTML="&nbsp;&nbsp;Hide Transliteration Scheme&nbsp;";
+            schemeVisible=1;
+        }
+    }
+    
+    
+        </script>
+
+    
+      
+               
+                   
+</body>
+
+
+</html>
