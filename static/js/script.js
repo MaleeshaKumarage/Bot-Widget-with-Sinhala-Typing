@@ -106,10 +106,16 @@ $(".usrInput").on("keyup keypress", function(e) {
             $(".quickReplies").remove();
             $(".usrInput").blur();
             
-          
-            setUserResponse(tooltip);
+            if(tooltip==""){
+                setUserResponse(text);
+                send(text);
+            }else{
+                setUserResponse(tooltip);
+                send(tooltip);
+            }
             
-            send(tooltip);
+            
+            
            
             e.preventDefault();
             return false;
@@ -117,28 +123,34 @@ $(".usrInput").on("keyup keypress", function(e) {
     }
 });
 
-$("#sendButton").on("click", function(e) {
+function sendAction() {
     var text = $(".usrInput").val();
+    var tooltip=document.getElementById("userInput").innerText;
     if (text == "" || $.trim(text) == "") {
         e.preventDefault();
         return false;
     } else {
         //destroy the existing chart
 
-        chatChart.destroy();
-        $(".chart-container").remove();
-        if (typeof modalChart !== 'undefined') { modalChart.destroy(); }
+       //chatChart.destroy();
+       // $(".chart-container").remove();
+       // if (typeof modalChart !== 'undefined') { modalChart.destroy(); }
 
         $(".suggestions").remove();
         $("#paginated_cards").remove();
         $(".quickReplies").remove();
         $(".usrInput").blur();
-        setUserResponse(tooltip);
-        send(tooltip);
+        if(tooltip==""){
+            setUserResponse(text);
+            send(text);
+        }else{
+            setUserResponse(tooltip);
+            send(tooltip);
+        }
         e.preventDefault();
         return false;
     }
-})
+};
 
 //==================================== Set user response =====================================
 function setUserResponse(message) {
@@ -208,7 +220,7 @@ function setBotResponse(response) {
         hideBotTyping();
         if (response.length < 1) {
             //if there is no response from Rasa, send  fallback message to the user
-            var fallbackMsg = "I am facing some issues, please try again later!!!";
+            var fallbackMsg = "පොඩි අවුලක් වෙලා වගේ.මද වේලාවකින් උත්සහ කරන්න.!!!";
 
             var BotResponse = '<img class="botAvatar" src="./static/img/sara_avatar.png"/><p class="botMsg">' + fallbackMsg + '</p><div class="clearfix"></div>';
 
