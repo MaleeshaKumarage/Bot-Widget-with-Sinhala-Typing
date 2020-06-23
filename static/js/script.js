@@ -152,6 +152,12 @@ function sendAction() {
     }
 };
 
+//=====================================================
+function WriteResponsesToDB(){
+
+    
+}
+
 //==================================== Set user response =====================================
 function setUserResponse(message) {
    
