@@ -179,20 +179,12 @@ function scrollToBottomOfResults() {
 //============== send the user message to rasa server =============================================
 function send(message) {
     $.ajax({
-        type: "POST",
-        url: 'your_functions_address.php',
+        url: 'DBConnector.php',
         dataType: 'json',
-        data: {functionname: 'add', arguments: [1, 2]},
-    
-        success: function (obj, textstatus) {
-                      if( !('error' in obj) ) {
-                          yourVariable = obj.result;
-                      }
-                      else {
-                          console.log(obj.error);
-                      }
-                }
-    });
+        success: function(data){
+            console.log(data);
+        }
+     });
     $.ajax({
         url: "https://xyz.nutrocare.org/core/webhooks/rest/webhook",
         type: "POST",
