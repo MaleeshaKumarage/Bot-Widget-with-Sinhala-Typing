@@ -246,7 +246,7 @@ function setNLUResponse(response,message) {
             intent:response,
             perform: "register"
           }, function(data, status) {
-            
+            console.log(data,status);
           });
     }, 500);
     
