@@ -153,25 +153,7 @@ function sendAction() {
     }
 };
 
-//=====================================================
-function WriteResponsesToDB(){
-    var textFile = null,
-  makeTextFile = function (text) {
-    var data = new Blob([text], {type: 'text/plain'});
 
-    // If we are replacing a previously generated file we need to
-    // manually revoke the object URL to avoid memory leaks.
-    if (textFile !== null) {
-      window.URL.revokeObjectURL(textFile);
-    }
-
-    textFile = window.URL.createObjectURL(data);
-
-    // returns a URL you can use as a href
-    return textFile;
-  };
-  
-}
 
 //==================================== Set user response =====================================
 function setUserResponse(message) {
@@ -196,7 +178,7 @@ function scrollToBottomOfResults() {
 
 //============== send the user message to rasa server =============================================
 function send(message) {
-    jQuery.ajax({
+    $.ajax({
         type: "POST",
         url: 'your_functions_address.php',
         dataType: 'json',
