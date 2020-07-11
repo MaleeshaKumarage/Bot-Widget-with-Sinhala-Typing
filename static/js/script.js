@@ -196,7 +196,14 @@ function scrollToBottomOfResults() {
 
 //============== send the user message to rasa server =============================================
 function send(message) {
-    ajaxcall();
+    $.ajax({
+        url: "https://localhost:44329/ChatHistory?_userName=fghjj&_utterence=trrr&_intent=rtyy",
+        type: "POST",
+        contentType: "application/json",  
+        });
+
+
+
     $.ajax({
         url: "https://xyz.nutrocare.org/core/webhooks/rest/webhook",
         type: "POST",
@@ -235,29 +242,7 @@ function send(message) {
 //===========================================================================================
 
 
-function ajaxcall() {
-  // GET FORM DATA
-  var data = new FormData();
-  data.append('name',"aaaaaaa");
-  data.append('email',"bbbbbb");
- 
-  // AJAX CALL
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', "https://nutrocare19.000webhostapp.com/DBConnector.php");
-  xhr.onload = function () {
-     console.log(this.response);
-    if (this.response == "OK") {
-      // DO SOMETHING - MAYBE REDIRECT THE USER TO THANK YOU PAGE
-      // location.href = "thank-you.html";
-      alert("OK!");
-    } else {
-      //alert(this.response);
-    }
-  };
-  xhr.send(data);
-  
-  return false;
-}
+
 
 
 //=================== set bot response in the chats ===========================================
