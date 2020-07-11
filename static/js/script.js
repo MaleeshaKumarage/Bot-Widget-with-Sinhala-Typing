@@ -238,8 +238,8 @@ function send(message) {
 function ajaxcall() {
   // GET FORM DATA
   var data = new FormData();
-  data.append('name', document.getElementById("user-name").value);
-  data.append('email', document.getElementById("user-email").value);
+  //data.append('name', document.getElementById("user-name").value);
+  //data.append('email', document.getElementById("user-email").value);
  
   // AJAX CALL
   var xhr = new XMLHttpRequest();
@@ -255,6 +255,7 @@ function ajaxcall() {
     }
   };
   xhr.send(data);
+  alert("this.response");
   return false;
 }
 
