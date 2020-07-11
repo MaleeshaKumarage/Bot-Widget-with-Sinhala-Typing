@@ -240,7 +240,7 @@ function setNLUResponse(response,message) {
         $.post("https://nutrocare19.000webhostapp.com/DBConnector.php", {
             name: "anonymous",
             email: "x@gmail.com",
-            id:"3434",
+            id:new Date(Date.now(0, 0, 0, 0, 0, 0)).toUTCString(),
             username:user_id,
             utterence:message,
             intent:response,
