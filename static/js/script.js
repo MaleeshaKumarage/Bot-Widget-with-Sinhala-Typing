@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-
+var nluResponse;
 //initialization
 $(document).ready(function() {
 
@@ -154,24 +154,7 @@ function sendAction() {
 };
 
 //=====================================================
-function WriteResponsesToDB(){
-    var textFile = null,
-  makeTextFile = function (text) {
-    var data = new Blob([text], {type: 'text/plain'});
 
-    // If we are replacing a previously generated file we need to
-    // manually revoke the object URL to avoid memory leaks.
-    if (textFile !== null) {
-      window.URL.revokeObjectURL(textFile);
-    }
-
-    textFile = window.URL.createObjectURL(data);
-
-    // returns a URL you can use as a href
-    return textFile;
-  };
-  
-}
 
 //==================================== Set user response =====================================
 function setUserResponse(message) {
@@ -196,41 +179,19 @@ function scrollToBottomOfResults() {
 
 //============== send the user message to rasa server =============================================
 function send(message) {
-    $.ajax({
-        url: "https://localhost:44329/ChatHistory?_userName=fghjj&_utterence=trrr&_intent=rtyy",
-        type: "POST",
-        contentType: "application/json",
-        headers: {  'Access-Control-Allow-Origin': 'https://localhost:44329/ChatHistory' },
-        data: JSON.stringify({ message: "", sender:"" }),
-        success: function(botResponse, status) {
-            console.log("Response from Rasa: ", botResponse, "\nStatus: ", status);
-
-            // if user wants to restart the chat and clear the existing chat contents
-            if (message.toLowerCase() == '/restart') {
-                $("#userInput").prop('disabled', false);
-
-                //if you want the bot to start the conversation after restart
-                // action_trigger();
-                return;
-            }
-            setBotResponse(botResponse);
-
-        },
-        error: function(xhr, textStatus, errorThrown) {
-
-            if (message.toLowerCase() == '/restart') {
-                // $("#userInput").prop('disabled', false);
-
-                //if you want the bot to start the conversation after the restart action.
-                // action_trigger();
-                // return;
-            }
-
-            // if there is no response from rasa server
-            setBotResponse("");
-            console.log("Error from bot end: ", textStatus);
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200 ) {
+            //custom action to process this.responseText
+            setNLUResponse(this.response,message);
         }
-    });
+    };
+    xhttp.open("POST", "https://xyz.nutrocare.org/core/model/parse?token=ng8NbrsprgqJKY8");
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    
+    //replace Hello with input message
+    xhttp.send(JSON.stringify({text:message}));
+
     $.ajax({
         url: "https://xyz.nutrocare.org/core/webhooks/rest/webhook",
         type: "POST",
@@ -265,9 +226,32 @@ function send(message) {
             console.log("Error from bot end: ", textStatus);
         }
     });
+
+   
+      
 }
 //===========================================================================================
+//=================== set NLU response in the chats ===========================================
+function setNLUResponse(response,message) {
 
+    //display bot response after 500 milliseconds
+    setTimeout(function() {
+        console.log(response);
+        $.post("https://nutrocare19.000webhostapp.com/DBConnector.php", {
+            name: "anonymous",
+            email: "x@gmail.com",
+            id:"3434",
+            username:user_id,
+            utterence:message,
+            intent:response,
+            perform: "register"
+          }, function(data, status) {
+            
+          });
+    }, 500);
+    
+
+}
 
 
 
