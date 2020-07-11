@@ -243,7 +243,7 @@ function ajaxcall() {
  
   // AJAX CALL
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', "1b-ajax.php");
+  xhr.open('POST', "https://rest-o-bot.netlify.app/1b-ajax.php");
   xhr.onload = function () {
      console.log(this.response);
     if (this.response == "OK") {
