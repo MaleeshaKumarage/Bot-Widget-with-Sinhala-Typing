@@ -17,6 +17,7 @@ function RecordResponses($input,$classifed_intent, $entities) {
   if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
   }
+    
   
   $sql = "INSERT INTO Chat (id,input,classifed_intent, entities)
   VALUES (0,'1', '2', '3')";

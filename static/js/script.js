@@ -246,13 +246,13 @@ function ajaxcall() {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', "1b-ajax.php");
   xhr.onload = function () {
-    // console.log(this.response);
+     console.log(this.response);
     if (this.response == "OK") {
       // DO SOMETHING - MAYBE REDIRECT THE USER TO THANK YOU PAGE
       // location.href = "thank-you.html";
       alert("OK!");
     } else {
-      alert(this.response);
+      alert("error");
     }
   };
   xhr.send(data);
