@@ -252,7 +252,7 @@ function ajaxcall() {
       // location.href = "thank-you.html";
       alert("OK!");
     } else {
-      alert(this);
+      alert(this.responseText);
     }
   };
   xhr.send(data);
