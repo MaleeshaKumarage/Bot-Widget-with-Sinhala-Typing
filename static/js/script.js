@@ -29,7 +29,7 @@ $(document).ready(function() {
 
     //global variables
     action_name = "action_greet_user";
-    user_id = "jitesh97";
+    user_id = "Maleesha";
 
     //if you want the bot to start the conversation
     // action_trigger();
@@ -238,8 +238,9 @@ function send(message) {
 function ajaxcall() {
   // GET FORM DATA
   var data = new FormData();
-  //data.append('name', document.getElementById("user-name").value);
-  //data.append('email', document.getElementById("user-email").value);
+  data.append('input',"aaaaaaa");
+  data.append('Intent',"bbbbbb");
+  data.append('Entity',"cccccc");
  
   // AJAX CALL
   var xhr = new XMLHttpRequest();
@@ -255,7 +256,7 @@ function ajaxcall() {
     }
   };
   xhr.send(data);
-  alert("this.response");
+  
   return false;
 }
 
