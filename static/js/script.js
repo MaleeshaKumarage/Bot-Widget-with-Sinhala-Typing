@@ -256,7 +256,7 @@ function ajaxcall() {
     }
   };
   xhr.send(data);
-  alert(data);
+  alert(data.forEach);
   return false;
 }
 
