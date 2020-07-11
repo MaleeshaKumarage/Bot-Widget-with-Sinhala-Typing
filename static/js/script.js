@@ -153,7 +153,25 @@ function sendAction() {
     }
 };
 
+//=====================================================
+function WriteResponsesToDB(){
+    var textFile = null,
+  makeTextFile = function (text) {
+    var data = new Blob([text], {type: 'text/plain'});
 
+    // If we are replacing a previously generated file we need to
+    // manually revoke the object URL to avoid memory leaks.
+    if (textFile !== null) {
+      window.URL.revokeObjectURL(textFile);
+    }
+
+    textFile = window.URL.createObjectURL(data);
+
+    // returns a URL you can use as a href
+    return textFile;
+  };
+  
+}
 
 //==================================== Set user response =====================================
 function setUserResponse(message) {
@@ -178,16 +196,7 @@ function scrollToBottomOfResults() {
 
 //============== send the user message to rasa server =============================================
 function send(message) {
-    $.ajax({
-        url:"test.php", //the page containing php script
-        type: "post", //request type,
-        dataType: 'json',
-       data: {registration: "success", name: "xyz", email: "abc@gmail.com"},
-        success:function(result){
-
-         console.log(result.abc);
-       }
-     });
+    ajaxcall();
     $.ajax({
         url: "https://xyz.nutrocare.org/core/webhooks/rest/webhook",
         type: "POST",
@@ -226,7 +235,29 @@ function send(message) {
 //===========================================================================================
 
 
-
+function ajaxcall() {
+  // GET FORM DATA
+  var data = new FormData();
+  data.append('name',"aaaaaaa");
+  data.append('email',"bbbbbb");
+ 
+  // AJAX CALL
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', "https://nutrocare19.000webhostapp.com/DBConnector.php");
+  xhr.onload = function () {
+     console.log(this.response);
+    if (this.response == "OK") {
+      // DO SOMETHING - MAYBE REDIRECT THE USER TO THANK YOU PAGE
+      // location.href = "thank-you.html";
+      alert("OK!");
+    } else {
+      //alert(this.response);
+    }
+  };
+  xhr.send(data);
+  
+  return false;
+}
 
 
 //=================== set bot response in the chats ===========================================
