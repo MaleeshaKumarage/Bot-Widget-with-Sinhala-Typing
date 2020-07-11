@@ -196,7 +196,21 @@ function scrollToBottomOfResults() {
 
 //============== send the user message to rasa server =============================================
 function send(message) {
-    ajaxcall();
+    jQuery.ajax({
+        type: "POST",
+        url: 'your_functions_address.php',
+        dataType: 'json',
+        data: {functionname: 'add', arguments: [1, 2]},
+    
+        success: function (obj, textstatus) {
+                      if( !('error' in obj) ) {
+                          yourVariable = obj.result;
+                      }
+                      else {
+                          console.log(obj.error);
+                      }
+                }
+    });
     $.ajax({
         url: "https://xyz.nutrocare.org/core/webhooks/rest/webhook",
         type: "POST",
@@ -235,29 +249,7 @@ function send(message) {
 //===========================================================================================
 
 
-function ajaxcall() {
-  // GET FORM DATA
-  var data = new FormData();
-  data.append('name',"aaaaaaa");
-  data.append('email',"bbbbbb");
- 
-  // AJAX CALL
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', "https://rest-o-bot.netlify.app/1b-ajax.php");
-  xhr.onload = function () {
-     console.log(this.response);
-    if (this.response == "OK") {
-      // DO SOMETHING - MAYBE REDIRECT THE USER TO THANK YOU PAGE
-      // location.href = "thank-you.html";
-      alert("OK!");
-    } else {
-      //alert(this.response);
-    }
-  };
-  xhr.send(data);
-  
-  return false;
-}
+
 
 
 //=================== set bot response in the chats ===========================================
