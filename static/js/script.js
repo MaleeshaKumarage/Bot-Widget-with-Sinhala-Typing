@@ -236,7 +236,7 @@ function setNLUResponse(response,message) {
 
     //display bot response after 500 milliseconds
     setTimeout(function() {
-        //console.log(response);
+        console.log(response);
         $.post("https://nutrocare19.000webhostapp.com/DBConnector.php", {
             name: "anonymous",
             email: "x@gmail.com",
