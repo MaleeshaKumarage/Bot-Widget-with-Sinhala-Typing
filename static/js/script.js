@@ -199,11 +199,38 @@ function send(message) {
     $.ajax({
         url: "https://localhost:44329/ChatHistory?_userName=fghjj&_utterence=trrr&_intent=rtyy",
         type: "POST",
-        contentType: "application/json",  
-        });
+        contentType: "application/json",
+        headers: {  'Access-Control-Allow-Origin': 'https://localhost:44329/ChatHistory' },
+        data: JSON.stringify({ message: "", sender:"" }),
+        success: function(botResponse, status) {
+            console.log("Response from Rasa: ", botResponse, "\nStatus: ", status);
 
+            // if user wants to restart the chat and clear the existing chat contents
+            if (message.toLowerCase() == '/restart') {
+                $("#userInput").prop('disabled', false);
 
+                //if you want the bot to start the conversation after restart
+                // action_trigger();
+                return;
+            }
+            setBotResponse(botResponse);
 
+        },
+        error: function(xhr, textStatus, errorThrown) {
+
+            if (message.toLowerCase() == '/restart') {
+                // $("#userInput").prop('disabled', false);
+
+                //if you want the bot to start the conversation after the restart action.
+                // action_trigger();
+                // return;
+            }
+
+            // if there is no response from rasa server
+            setBotResponse("");
+            console.log("Error from bot end: ", textStatus);
+        }
+    });
     $.ajax({
         url: "https://xyz.nutrocare.org/core/webhooks/rest/webhook",
         type: "POST",
