@@ -238,25 +238,24 @@ function send(message) {
 function ajaxcall() {
   // GET FORM DATA
   var data = new FormData();
-  data.append('input',"aaaaaaa");
-  data.append('Intent',"bbbbbb");
-  data.append('Entity',"cccccc");
+  data.append('name',"aaaaaaa");
+  data.append('email',"bbbbbb");
  
   // AJAX CALL
   var xhr = new XMLHttpRequest();
   xhr.open('POST', "1b-ajax.php");
   xhr.onload = function () {
-     console.log(this.response);
+    // console.log(this.response);
     if (this.response == "OK") {
       // DO SOMETHING - MAYBE REDIRECT THE USER TO THANK YOU PAGE
       // location.href = "thank-you.html";
       alert("OK!");
     } else {
-      alert(this.responseText);
+      alert(this.response);
     }
   };
   xhr.send(data);
-  alert(data.forEach);
+  
   return false;
 }
 
