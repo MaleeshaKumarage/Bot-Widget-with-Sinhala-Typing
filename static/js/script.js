@@ -183,6 +183,7 @@ function send(message) {
         dataType: 'json',
         success: function(data){
             console.log(data);
+            alert(data);
         }
      });
     $.ajax({
