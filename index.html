@@ -90,10 +90,13 @@
                 <div class="clearfix"></div>
 
             </div>
+           
 
             <!--keypad for user to type the message -->
             <div class="keypad tooltip">
-               
+               <select class="usrInput ">
+                    <option>AAA</option>
+               </select>
                 <span class="tooltiptext" id="userInput"></span>
                 <textarea id="userInput1" onkeyup="startText();" onselect="startText();" onclick="startText();" placeholder="Type a message..." class="usrInput "></textarea>
                 
@@ -115,6 +118,8 @@
         </div>
 
     </div>
+
+    
    
 
     <!--JavaScript at end of body for optimized loading-->
@@ -238,6 +243,27 @@
     function startText() {
         var s,r,v;
         var tt=document.getElementById("userInput1");
+        console.log(tt.value);
+        //Get Call google.language.transliterate() suggetions
+
+        $.ajax({
+        url: "https://inputtools.google.com/request?text="+tt.value+"&itc=si-t-i0-und&num=5",
+        type: "GET",
+        contentType: "application/json",
+        dataType:'json',
+        success: function(result) {
+         
+            console.log(result);
+        },
+        error: function(result) {
+            console.log(result);
+        }
+    });
+
+
+
+
+
         text = tt.value;  
         //special consonents
         for (var i=0; i<specialConsonants.length; i++){
