@@ -56,7 +56,7 @@ function action_trigger() {
 
     // send an event to the bot, so that bot can start the conversation by greeting the user
     $.ajax({
-        url: `http://34.86.254.206/conversations/${user_id}/execute`,
+        url: `http://hrnludev.vevro.com/conversations/${user_id}/execute`,
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({ "name": action_name, "policy": "MappingPolicy", "confidence": "0.98" }),
@@ -193,7 +193,7 @@ function send(message) {
     xhttp.send(JSON.stringify({text:message}));
 
     $.ajax({
-        url: "https://xyz.nutrocare.org/core/webhooks/rest/webhook",
+        url: "http://hrnludev.vevro.com/core/webhooks/rest/webhook",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({ message: message, sender: user_id }),
